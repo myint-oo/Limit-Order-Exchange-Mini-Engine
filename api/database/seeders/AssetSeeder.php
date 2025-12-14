@@ -20,7 +20,7 @@ class AssetSeeder extends Seeder
             [
                 'user_id' => $buyer->id,
                 'symbol' => 'BTC',
-                'amount' => 2.50000000,
+                'amount' => 5.00000000,
                 'locked_amount' => 0.00000000,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -40,7 +40,7 @@ class AssetSeeder extends Seeder
             [
                 'user_id' => $seller->id,
                 'symbol' => 'BTC',
-                'amount' => 5.00000000,
+                'amount' => 10.00000000,
                 'locked_amount' => 0.00000000,
                 'created_at' => now(),
                 'updated_at' => now(),

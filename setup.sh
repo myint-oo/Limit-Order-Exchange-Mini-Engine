@@ -75,13 +75,8 @@ fi
 echo "✅ Vue Frontend setup complete!"
 echo ""
 
-# ==========================================
-# Summary
-# ==========================================
 echo "=========================================="
-echo "🎉 Project setup complete!"
-echo "=========================================="
-echo ""
-echo "To start the development servers, run:"
-echo "   ./start.sh"
+echo "🎉 Setting PHP & Node server using ./start.sh command"
+
+cd "$SCRIPT_DIR" && ./start.sh
 
