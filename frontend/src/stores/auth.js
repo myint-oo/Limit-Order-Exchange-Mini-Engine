@@ -46,9 +46,9 @@ export const useAuthStore = defineStore('auth', () => {
 
     try {
       await api.getCsrfCookie()
-      const data = await api.post('/login', { email, password })
+      const user = await api.post('/login', { email, password })
 
-      setUser(data.user)
+      setUser(user)
       return { success: true }
     } catch (err) {
       error.value = err.message
@@ -75,8 +75,8 @@ export const useAuthStore = defineStore('auth', () => {
     loading.value = true
 
     try {
-      const data = await api.get('/user')
-      user.value = data.user
+      user.value = await api.get('/user')
+
       return true
     } catch (err) {
       console.error('Fetch user error:', err)
@@ -113,6 +113,5 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     fetchUser,
     updateProfile,
-    updatePassword,
   }
 })

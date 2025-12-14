@@ -55,7 +55,7 @@ async function request(endpoint, options = {}) {
     throw error
   }
 
-  return data
+  return data.data
 }
 
 export const api = {

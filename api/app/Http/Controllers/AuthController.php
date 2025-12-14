@@ -2,53 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Responses\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    /**
-     * Register a new user.
-     */
-    public function register(Request $request): JsonResponse
+    public function register(RegisterRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'confirmed', Password::defaults()],
-        ]);
+        $validated = $request->validated();
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'balance' => 0,
+            'balance' => 100000.00000000,
         ]);
 
         Auth::login($user);
 
-        return response()->json([
-            'message' => 'User registered successfully',
-            'user' => $user,
-        ], 201);
+        return ApiResponse::success(
+            data: (new UserResource($user)),
+            message: 'User registered successfully',
+            statusCode: 201
+        );
     }
 
-    /**
-     * Login user with session.
-     */
-    public function login(Request $request): JsonResponse
+    public function login(LoginRequest $request): JsonResponse
     {
-        $validated = $request->validate([
-            'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
-        ]);
+        $validated = $request->validated();
 
-        if (!Auth::attempt($validated, $request->boolean('remember'))) {
+        if (! Auth::attempt($validated, $request->boolean('remember'))) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
@@ -56,15 +47,12 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return response()->json([
-            'message' => 'Login successful',
-            'user' => Auth::user(),
-        ]);
+        return ApiResponse::success(
+            data: (new UserResource(Auth::user())),
+            message: 'Login successful',
+        );
     }
 
-    /**
-     * Logout user (destroy session).
-     */
     public function logout(Request $request): JsonResponse
     {
         Auth::guard('web')->logout();
@@ -72,18 +60,15 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response()->json([
-            'message' => 'Logged out successfully',
-        ]);
+        return ApiResponse::success(
+            message: 'Logged out successfully',
+        );
     }
 
-    /**
-     * Get the authenticated user.
-     */
     public function user(Request $request): JsonResponse
     {
-        return response()->json([
-            'user' => $request->user(),
-        ]);
+        return ApiResponse::success(
+            new UserResource($request->user())
+        );
     }
 }
