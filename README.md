@@ -1,9 +1,64 @@
 ## Setup
-1. Create ```.env``` file from ```.env.example``` in both ```api``` and ```frontend```
-2. Add ```pusher``` configuration for ```PUSHER_APP_KEY```, ```PUSHER_APP_SECRET```, ```PUSHER_APP_ID``` ```PUSHER_APP_CLUSTER```  in both ```api``` and ```frontend``` ```.env``` file
 
-3. Run ```./setup.sh``` which will install all dependencies, prepare sqlite database, and setup vite and php server
-4. Application ready to serve on [http://localhost:5173/](http://localhost:5173/)
+### Prerequisites
+- PHP 8.2+
+- Composer
+- Node.js 18+
+- npm
+
+### Installation
+
+1. **Configure environment files**
+   
+   Copy `.env.example` to `.env` in both `api` and `frontend` directories:
+   ```bash
+   cp api/.env.example api/.env
+   cp frontend/.env.example frontend/.env
+   ```
+
+2. **Configure Pusher for real-time updates**
+   
+   Add your Pusher credentials to both `.env` files:
+   
+   **api/.env:**
+   ```
+   PUSHER_APP_ID=your_app_id
+   PUSHER_APP_KEY=your_app_key
+   PUSHER_APP_SECRET=your_app_secret
+   PUSHER_APP_CLUSTER=your_cluster
+   ```
+   
+   **frontend/.env:**
+   ```
+   VITE_PUSHER_APP_KEY=your_app_key
+   VITE_PUSHER_APP_CLUSTER=your_cluster
+   ```
+
+3. **Run the setup script**
+   ```bash
+   ./setup.sh
+   ```
+   This will:
+   - Install Composer dependencies
+   - Generate Laravel application key
+   - Create SQLite database
+   - Run migrations and seed data
+   - Install npm dependencies
+   - Start the development servers
+
+4. **Access the application**
+   
+   Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+## Default Data
+
+The default seeder creates two test users:
+
+| Email | Password |
+|-------|----------|
+| buyer@example.com | password |
+| seller@example.com | password |
+
 
 ## Database design
 
