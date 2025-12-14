@@ -4,13 +4,15 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'balance',
     ];
 
     /**
@@ -43,6 +46,48 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'balance' => 'decimal:8',
         ];
+    }
+
+    /**
+     * Get user's assets.
+     */
+    public function assets(): HasMany
+    {
+        return $this->hasMany(Asset::class);
+    }
+
+    /**
+     * Get user's orders.
+     */
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /**
+     * Get user's trades (as buyer or seller).
+     */
+    public function trades(): HasMany
+    {
+        return $this->hasMany(Trade::class, 'buyer_id')
+            ->orWhere('seller_id', $this->id);
+    }
+
+    /**
+     * Get trades where user was the buyer.
+     */
+    public function buyTrades(): HasMany
+    {
+        return $this->hasMany(Trade::class, 'buyer_id');
+    }
+
+    /**
+     * Get trades where user was the seller.
+     */
+    public function sellTrades(): HasMany
+    {
+        return $this->hasMany(Trade::class, 'seller_id');
     }
 }
