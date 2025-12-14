@@ -1,5 +1,9 @@
 ## Setup
-1. 
+1. Create ```.env``` file from ```.env.example``` in both ```api``` and ```frontend```
+2. Add ```pusher``` configuration for ```PUSHER_APP_KEY```, ```PUSHER_APP_SECRET```, ```PUSHER_APP_ID``` ```PUSHER_APP_CLUSTER```  in both ```api``` and ```frontend``` ```.env``` file
+
+3. Run ```./setup.sh``` which will install all dependencies, prepare sqlite database, and setup vite and php server
+4. Application ready to serve on [http://localhost:5173/](http://localhost:5173/)
 
 ## Database design
 
