@@ -51,6 +51,22 @@ class User extends Authenticatable
     }
 
     /**
+     * The accessors to append to the model's array form.
+     */
+    protected $appends = ['locked_balance'];
+
+    /**
+     * Get the locked USD balance from open buy orders.
+     */
+    public function getLockedBalanceAttribute(): string
+    {
+        return $this->orders()
+            ->where('status', 'open')
+            ->where('side', 'buy')
+            ->sum('locked_funds') ?? '0';
+    }
+
+    /**
      * Get user's assets.
      */
     public function assets(): HasMany

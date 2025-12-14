@@ -92,7 +92,7 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      const data = await api.put('/user/profile', { name, email })
+      const data = await api.put('/profile', { name, email })
       setUser(data.user)
       return { success: true }
     } catch (err) {
@@ -100,6 +100,20 @@ export const useAuthStore = defineStore('auth', () => {
       return { success: false, error: err.message }
     } finally {
       loading.value = false
+    }
+  }
+
+  // Update balance directly (for real-time updates)
+  function updateBalance(balance) {
+    if (user.value) {
+      user.value.balance = balance
+    }
+  }
+
+  // Update locked balance directly (for real-time updates)
+  function updateLockedBalance(lockedBalance) {
+    if (user.value) {
+      user.value.locked_balance = lockedBalance
     }
   }
 
@@ -113,5 +127,7 @@ export const useAuthStore = defineStore('auth', () => {
     logout,
     fetchUser,
     updateProfile,
+    updateBalance,
+    updateLockedBalance,
   }
 })

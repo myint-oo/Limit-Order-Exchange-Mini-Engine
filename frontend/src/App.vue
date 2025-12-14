@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import ToastContainer from '@/components/ToastContainer.vue'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -13,14 +14,20 @@ async function handleLogout() {
 
 <template>
   <div class="app-layout">
+    <!-- Toast notifications -->
+    <ToastContainer />
+
     <header v-if="authStore.isAuthenticated" class="main-header">
       <div class="header-content">
         <div class="logo-section">
-          <span class="logo-text">📈 Order Exchange</span>
+          <span class="logo-text">
+            <img src="/logo.svg" alt="Logo" class="inline h-6 w-6 mr-2" />
+             Mr. Mini Exchanger
+          </span>
         </div>
 
         <nav class="main-nav">
-          <RouterLink to="/">Dashboard</RouterLink>
+          <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/profile">Profile</RouterLink>
         </nav>
 

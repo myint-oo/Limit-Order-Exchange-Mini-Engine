@@ -1,0 +1,68 @@
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+
+export const useToastStore = defineStore('toast', () => {
+  const toasts = ref([])
+  let nextId = 1
+
+  /**
+   * Add a toast notification
+   * @param {Object} options - Toast options
+   * @param {string} options.message - The message to display
+   * @param {string} options.type - 'success' | 'error' | 'info' | 'warning'
+   * @param {number} options.duration - Duration in ms (default: 5000)
+   */
+  function addToast({ message, type = 'info', duration = 5000 }) {
+    const id = nextId++
+    
+    toasts.value.push({
+      id,
+      message,
+      type,
+      duration,
+    })
+
+    // Auto-remove after duration
+    if (duration > 0) {
+      setTimeout(() => {
+        removeToast(id)
+      }, duration)
+    }
+
+    return id
+  }
+
+  function removeToast(id) {
+    const index = toasts.value.findIndex(t => t.id === id)
+    if (index !== -1) {
+      toasts.value.splice(index, 1)
+    }
+  }
+
+  // Convenience methods
+  function success(message, duration = 5000) {
+    return addToast({ message, type: 'success', duration })
+  }
+
+  function error(message, duration = 5000) {
+    return addToast({ message, type: 'error', duration })
+  }
+
+  function info(message, duration = 5000) {
+    return addToast({ message, type: 'info', duration })
+  }
+
+  function warning(message, duration = 5000) {
+    return addToast({ message, type: 'warning', duration })
+  }
+
+  return {
+    toasts,
+    addToast,
+    removeToast,
+    success,
+    error,
+    info,
+    warning,
+  }
+})
