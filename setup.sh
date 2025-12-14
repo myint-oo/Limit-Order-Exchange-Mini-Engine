@@ -2,7 +2,7 @@
 
 set -e
 
-echo "🛠️  Setting up Order Exchange Mini Engine..."
+echo "🛠️  Setting up Mr. Mini Exchanger..."
 echo ""
 
 # Get the directory where the script is located
@@ -84,11 +84,4 @@ echo "=========================================="
 echo ""
 echo "To start the development servers, run:"
 echo "   ./start.sh"
-echo ""
-echo "Default users created:"
-echo "   📧 buyer@example.com  (password: password)"
-echo "   📧 seller@example.com (password: password)"
-echo ""
-echo "API:      http://localhost:8000"
-echo "Frontend: http://localhost:5173"
-echo ""
+

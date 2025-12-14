@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "🚀 Starting Order Exchange Mini Engine..."
+echo "🚀 Starting Mr. Mini Exchanger..."
 
 # Kill background processes on exit
 trap 'kill $(jobs -p) 2>/dev/null' EXIT

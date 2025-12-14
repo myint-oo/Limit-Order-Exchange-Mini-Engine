@@ -1,3 +1,8 @@
+## Setup
+1. 
+
+## Database design
+
 ```mermaid
 erDiagram
     USERS ||--o{ ASSETS : have
